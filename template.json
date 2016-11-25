@@ -709,9 +709,7 @@
 					"IpProtocol": "tcp",
 					"FromPort": "22",
 					"ToPort": "22",
-					"CidrIp": {
-						"Ref": "0.0.0.0/0"
-					}
+					"CidrIp": "1.2.3.4/32"
 				}, {
 					"IpProtocol": "tcp",
 					"FromPort": "80",
