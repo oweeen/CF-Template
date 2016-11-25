@@ -800,14 +800,32 @@
 			}
 		},
 		
-		"NATGateWayEIP": {
+		"NATGatewayEIP": {
 			"Type" : "AWS::EC2::EIP",
 			"DependsOn": "VPC",
 			"Properties" : {
 				"Domain" : "VPC"
 		   }
-		}
+		},
 		
+		"NATGateway" : {
+			"DependsOn" : "AttachGateway",
+			"Type" : "AWS::EC2::NatGateway",
+			"Properties" : {
+				"AllocationId" : { "Fn::GetAtt" : ["NATGatewayEIP", "AllocationId"]},
+				"SubnetId" : { "Ref" : "OctankWebSubnet"}
+							}
+				},
+
+				
+		"Route" : {
+			"Type" : "AWS::EC2::Route",
+			"Properties" : {
+				"RouteTableId" : { "Ref" : "InternalRouteTable" },
+				"DestinationCidrBlock" : "0.0.0.0/0",
+				"NatGatewayId" : { "Ref" : "NATGateway" }
+				  }
+				}
 		
 	}
 }
