@@ -750,6 +750,15 @@
 					"FromPort": "443",
 					"ToPort": "443",
 					"CidrIp": "0.0.0.0/0"
+				}],
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CFN OctankWeb SG"
+				}, {
+					"Key": "Application",
+					"Value": {
+						"Ref": "AWS::StackId"
+					}
 				}]
 			}
 		},
@@ -762,7 +771,16 @@
 					"Ref": "VPC"
 				},
 				"GroupDescription": "Enable web tier to access app tier on port 80"
-			}
+			},
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CFN OctankApp SG"
+				}, {
+					"Key": "Application",
+					"Value": {
+						"Ref": "AWS::StackId"
+					}
+				}]
 		},
 		
 		"OctankAppSecurityGroupIngress": {
@@ -785,7 +803,16 @@
 					"Ref": "VPC"
 				},
 				"GroupDescription": "Enable app tier to access db tier on port 3306"
-			}
+			},
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CFN OctankDB SG"
+				}, {
+					"Key": "Application",
+					"Value": {
+						"Ref": "AWS::StackId"
+					}
+				}]
 		},
 		
 		"OctankDBSecurityGroupIngress": {
