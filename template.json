@@ -688,7 +688,7 @@
 			"Type": "AWS::EC2::SubnetNetworkAclAssociation",
 			"Properties": {
 				"SubnetId": {
-					"Ref": "Subnet"
+					"Ref": "OctankWebSubnet"
 				},
 				"NetworkAclId": {
 					"Ref": "NetworkAcl"
