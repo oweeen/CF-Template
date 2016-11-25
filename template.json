@@ -448,11 +448,15 @@
 				"EnableDnsSupport": "TRUE",
 				"EnableDnsHostnames": "TRUE",
 				"Tags": [{
+					"Key": "Name",
+					"Value": "CFN OctankVPC"
+					}, {
 					"Key": "Application",
 					"Value": {
 						"Ref": "AWS::StackId"
 					}
-				}]
+				}
+				]
 			}
 		},
 
@@ -463,7 +467,8 @@
 					"Ref": "VPC"
 				},
 				"CidrBlock": "10.0.1.0/24",
-				"Tags": [{
+				"Tags": [
+				{
 					"Key": "Name",
 					"Value": "CFN OctankWeb"
 				}, {
@@ -471,7 +476,8 @@
 					"Value": {
 						"Ref": "AWS::StackId"
 					}
-				}]
+				}
+				]
 			}
 		},
 
