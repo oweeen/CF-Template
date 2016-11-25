@@ -798,6 +798,14 @@
                 "FromPort": "3306",
                 "ToPort": "3306"
 			}
+		},
+		
+		"NATGateWayEIP": {
+			"Type" : "AWS::EC2::EIP",
+			"DependsOn": {"Ref": "VPC"},
+			"Properties" : {
+				"Domain" : {"Ref": "VPC"}
+		   }
 		}
 		
 		
