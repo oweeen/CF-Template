@@ -445,6 +445,8 @@
 			"Type": "AWS::EC2::VPC",
 			"Properties": {
 				"CidrBlock": "10.0.0.0/16",
+				"EnableDnsSupport": "TRUE",
+				"EnableDnsHostnames": "TRUE",
 				"Tags": [{
 					"Key": "Application",
 					"Value": {
@@ -461,13 +463,18 @@
 					"Ref": "VPC"
 				},
 				"CidrBlock": "10.0.1.0/24",
-				"Tags": [
-				{"Key" : "Name","Value" : "CFN OctankWeb"},
-				{"Key": "Application","Value": {"Ref": "AWS::StackId"}}
-				]
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CFN OctankWeb"
+				}, {
+					"Key": "Application",
+					"Value": {
+						"Ref": "AWS::StackId"
+					}
+				}]
 			}
 		},
-		
+
 		"OctankAppSubnet": {
 			"Type": "AWS::EC2::Subnet",
 			"Properties": {
@@ -475,13 +482,18 @@
 					"Ref": "VPC"
 				},
 				"CidrBlock": "10.0.2.0/24",
-				"Tags": [
-				{"Key" : "Name","Value" : "CFN OctankApp"},
-				{"Key": "Application","Value": {"Ref": "AWS::StackId"}}
-				]
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CFN OctankApp"
+				}, {
+					"Key": "Application",
+					"Value": {
+						"Ref": "AWS::StackId"
+					}
+				}]
 			}
 		},
-		
+
 		"OctankDBSubnet": {
 			"Type": "AWS::EC2::Subnet",
 			"Properties": {
@@ -489,22 +501,32 @@
 					"Ref": "VPC"
 				},
 				"CidrBlock": "10.0.3.0/24",
-				"Tags": [
-				{"Key" : "Name","Value" : "CFN OctankDB"},
-				{"Key": "Application","Value": {"Ref": "AWS::StackId"}}
-				]
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CFN OctankDB"
+				}, {
+					"Key": "Application",
+					"Value": {
+						"Ref": "AWS::StackId"
+					}
+				}]
 			}
 		},
-		
-		
-		
+
+
+
 		"InternetGateway": {
 			"Type": "AWS::EC2::InternetGateway",
 			"Properties": {
-				"Tags": [
-				{"Key" : "Name","Value" : "CFN IGW"},
-				{"Key": "Application","Value": {"Ref": "AWS::StackId"}}
-				]
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CFN IGW"
+				}, {
+					"Key": "Application",
+					"Value": {
+						"Ref": "AWS::StackId"
+					}
+				}]
 			}
 		},
 
@@ -520,7 +542,7 @@
 			}
 		},
 
-		"RouteTable": {
+		"PublicFacingRouteTable": {
 			"Type": "AWS::EC2::RouteTable",
 			"Properties": {
 				"VpcId": {
@@ -535,12 +557,27 @@
 			}
 		},
 
-		"Route": {
+		"InternalRouteTable": {
+			"Type": "AWS::EC2::RouteTable",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"Tags": [{
+					"Key": "Application",
+					"Value": {
+						"Ref": "AWS::StackId"
+					}
+				}]
+			}
+		},
+
+		"IGWRoute": {
 			"Type": "AWS::EC2::Route",
 			"DependsOn": "AttachGateway",
 			"Properties": {
 				"RouteTableId": {
-					"Ref": "RouteTable"
+					"Ref": "PublicFacingRouteTable"
 				},
 				"DestinationCidrBlock": "0.0.0.0/0",
 				"GatewayId": {
@@ -551,19 +588,16 @@
 
 		"OctankWebSubnetRouteTableAssociation": {
 			"Type": "AWS::EC2::SubnetRouteTableAssociation",
-			"Properties": {"SubnetId": {"Ref": "OctankWebSubnet"},"RouteTableId": {"Ref": "RouteTable"}}
+			"Properties": {
+				"SubnetId": {
+					"Ref": "OctankWebSubnet"
+				},
+				"RouteTableId": {
+					"Ref": "PublicFacingRouteTable"
+				}
+			}
 		},
-		
-		"OctankAppSubnetRouteTableAssociation": {
-			"Type": "AWS::EC2::SubnetRouteTableAssociation",
-			"Properties": {"SubnetId": {"Ref": "OctankAppSubnet"},"RouteTableId": {"Ref": "RouteTable"}}
-		},
-		
-		"OctankDBSubnetRouteTableAssociation": {
-			"Type": "AWS::EC2::SubnetRouteTableAssociation",
-			"Properties": {"SubnetId": {"Ref": "OctankDBSubnet"},"RouteTableId": {"Ref": "RouteTable"}}
-		},
-		
+
 
 
 		"NetworkAcl": {
