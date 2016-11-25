@@ -445,7 +445,6 @@
 			"Type": "AWS::EC2::VPC",
 			"Properties": {
 				"CidrBlock": "10.0.0.0/16",
-				"Name" : "Test VPC",
 				"Tags": [{
 					"Key": "Application",
 					"Value": {
@@ -462,15 +461,12 @@
 					"Ref": "VPC"
 				},
 				"CidrBlock": "10.0.0.0/24",
-				"Tags": [{
-					"Key": "Application",
-					"Value": {
-						"Ref": "AWS::StackId"
-					}
-				}]
+				"Tags": [{"Key": "Application","Value": {"Ref": "AWS::StackId"}},{"Key" : "OctankSubnet","Value" : "OctankWeb"}]
 			}
 		},
-
+		
+		
+		
 		"InternetGateway": {
 			"Type": "AWS::EC2::InternetGateway",
 			"Properties": {
