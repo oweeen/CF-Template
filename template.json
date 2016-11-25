@@ -729,9 +729,7 @@
 				"SubnetId": {
 					"Ref": "OctankWebSubnet"
 				},
-				"NetworkAclId": {
-					"Ref": "NetworkAcl"
-				}
+				"NetworkAclId": {"Ref": "NetworkAcl"}
 			}
 		},
 
@@ -762,12 +760,7 @@
 				"VpcId": {
 					"Ref": "VPC"
 				},
-				"GroupDescription": "Enable web tier to access app tier on port 80",
-				"SecurityGroupIngress": [{
-					"SourceSecurityGroupID": {"Ref": "OctankWebSecurityGroup"},
-					"IpProtocol": "tcp",
-					"ToPort": "80"
-				}]
+				"GroupDescription": "Enable web tier to access app tier on port 80"
 			}
 		}
 		
