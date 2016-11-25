@@ -762,16 +762,7 @@
 					"Ref": "VPC"
 				},
 				"GroupDescription": "Enable web tier to access app tier on port 80"
-			},
-				"Tags": [{
-					"Key": "Name",
-					"Value": "CFN OctankApp SG"
-				}, {
-					"Key": "Application",
-					"Value": {
-						"Ref": "AWS::StackId"
-					}
-				}]
+			}
 		},
 		
 		"OctankAppSecurityGroupIngress": {
