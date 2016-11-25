@@ -771,9 +771,7 @@
 				"GroupId": { "Ref" : "OctankAppSecurityGroup"},
 				"SourceSecurityGroupId": { "Ref": "OctankAppSecurityGroup" },
 				"IpProtocol": "tcp",
-                "FromPort": "-1",
                 "ToPort": "80"
-				
 			}
 		}
 		
