@@ -802,9 +802,9 @@
 		
 		"NATGateWayEIP": {
 			"Type" : "AWS::EC2::EIP",
-			"DependsOn": {"Ref": "VPC"},
+			"DependsOn": "VPC",
 			"Properties" : {
-				"Domain" : {"Ref": "VPC"}
+				"Domain" : "VPC"
 		   }
 		}
 		
