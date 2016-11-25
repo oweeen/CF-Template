@@ -735,25 +735,44 @@
 			}
 		},
 
-		"InstanceSecurityGroup": {
+		"OctankWebSecurityGroup": {
 			"Type": "AWS::EC2::SecurityGroup",
 			"Properties": {
 				"VpcId": {
 					"Ref": "VPC"
 				},
-				"GroupDescription": "Enable SSH access via port 22",
+				"GroupDescription": "Enable inbound access via port 80 and 443",
 				"SecurityGroupIngress": [{
-					"IpProtocol": "tcp",
-					"FromPort": "22",
-					"ToPort": "22",
-					"CidrIp": "1.2.3.4/32"
-				}, {
 					"IpProtocol": "tcp",
 					"FromPort": "80",
 					"ToPort": "80",
 					"CidrIp": "0.0.0.0/0"
+				}, {
+					"IpProtocol": "tcp",
+					"FromPort": "443",
+					"ToPort": "443",
+					"CidrIp": "0.0.0.0/0"
+				}]
+			}
+		},
+		
+		"OctankAppSecurityGroup": {
+			"Type": "AWS::EC2::SecurityGroup",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"GroupDescription": "Enable web tier to access app tier on port 80",
+				"SecurityGroupIngress": [{
+					"SourceSecurityGroupID": {"Ref": "OctankWebSecurityGroup"},
+					"IpProtocol": "tcp",
+					"ToPort": "80"
 				}]
 			}
 		}
+		
+
+		
+		
 	}
 }
