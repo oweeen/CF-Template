@@ -767,11 +767,36 @@
 		
 		"OctankAppSecurityGroupIngress": {
 			"Type": "AWS::EC2::SecurityGroupIngress",
+			"DependsOn": "OctankAppSecurityGroup",
 			"Properties": {
 				"GroupId": { "Ref" : "OctankAppSecurityGroup"},
+				"SourceSecurityGroupId": { "Ref": "OctankWebSecurityGroup" },
+				"IpProtocol": "tcp",
+                "FromPort": "80",
+                "ToPort": "80"
+			}
+		},
+		
+		"OctankDBSecurityGroup": {
+			"Type": "AWS::EC2::SecurityGroup",
+			"DependsOn": "OctankAppSecurityGroup",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"GroupDescription": "Enable app tier to access db tier on port 3306"
+			}
+		},
+		
+		"OctankDBSecurityGroupIngress": {
+			"Type": "AWS::EC2::SecurityGroupIngress",
+			"DependsOn": "OctankDBSecurityGroup",
+			"Properties": {
+				"GroupId": { "Ref" : "OctankDBSecurityGroup"},
 				"SourceSecurityGroupId": { "Ref": "OctankAppSecurityGroup" },
 				"IpProtocol": "tcp",
-                "ToPort": "80"
+                "FromPort": "3306",
+                "ToPort": "3306"
 			}
 		}
 		
