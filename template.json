@@ -739,7 +739,7 @@
 				"VpcId": {
 					"Ref": "VPC"
 				},
-				"GroupDescription": "Enable inbound access via port 80 and 443",
+				"GroupDescription": "Enable external access via port 80 and 443",
 				"SecurityGroupIngress": [{
 					"IpProtocol": "tcp",
 					"FromPort": "80",
@@ -750,15 +750,6 @@
 					"FromPort": "443",
 					"ToPort": "443",
 					"CidrIp": "0.0.0.0/0"
-				}],
-				"Tags": [{
-					"Key": "Name",
-					"Value": "CFN OctankWeb SG"
-				}, {
-					"Key": "Application",
-					"Value": {
-						"Ref": "AWS::StackId"
-					}
 				}]
 			}
 		},
@@ -803,16 +794,7 @@
 					"Ref": "VPC"
 				},
 				"GroupDescription": "Enable app tier to access db tier on port 3306"
-			},
-				"Tags": [{
-					"Key": "Name",
-					"Value": "CFN OctankDB SG"
-				}, {
-					"Key": "Application",
-					"Value": {
-						"Ref": "AWS::StackId"
-					}
-				}]
+			}
 		},
 		
 		"OctankDBSecurityGroupIngress": {
