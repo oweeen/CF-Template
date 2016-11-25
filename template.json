@@ -769,7 +769,6 @@
 			"Type": "AWS::EC2::SecurityGroupIngress",
 			"Properties": {
 				"GroupId": { "Ref" : "OctankAppSecurityGroup"},
-				"GroupDescription": "Enable web tier to access app tier on port 80",
 				"SourceSecurityGroupId": { "Ref": "OctankAppSecurityGroup" },
 				"IpProtocol": "tcp",
                 "FromPort": "-1",
