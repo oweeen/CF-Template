@@ -454,14 +454,45 @@
 			}
 		},
 
-		"Subnet": {
+		"OctankWebSubnet": {
 			"Type": "AWS::EC2::Subnet",
 			"Properties": {
 				"VpcId": {
 					"Ref": "VPC"
 				},
-				"CidrBlock": "10.0.0.0/24",
-				"Tags": [{"Key": "Application","Value": {"Ref": "AWS::StackId"}},{"Key" : "OctankSubnet","Value" : "OctankWeb"}]
+				"CidrBlock": "10.0.1.0/24",
+				"Tags": [
+				{"Key" : "Name","Value" : "CFN OctankWeb"},
+				{"Key": "Application","Value": {"Ref": "AWS::StackId"}}
+				]
+			}
+		},
+		
+		"OctankAppSubnet": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"CidrBlock": "10.0.2.0/24",
+				"Tags": [
+				{"Key" : "Name","Value" : "CFN OctankApp"},
+				{"Key": "Application","Value": {"Ref": "AWS::StackId"}}
+				]
+			}
+		},
+		
+		"OctankDBSubnet": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"CidrBlock": "10.0.3.0/24",
+				"Tags": [
+				{"Key" : "Name","Value" : "CFN OctankDB"},
+				{"Key": "Application","Value": {"Ref": "AWS::StackId"}}
+				]
 			}
 		},
 		
@@ -470,12 +501,10 @@
 		"InternetGateway": {
 			"Type": "AWS::EC2::InternetGateway",
 			"Properties": {
-				"Tags": [{
-					"Key": "Application",
-					"Value": {
-						"Ref": "AWS::StackId"
-					}
-				}]
+				"Tags": [
+				{"Key" : "Name","Value" : "CFN IGW"},
+				{"Key": "Application","Value": {"Ref": "AWS::StackId"}}
+				]
 			}
 		},
 
