@@ -598,7 +598,15 @@
 			}
 		},
 
-
+			"OctankAppSubnetRouteTableAssociation": {
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {"SubnetId": {"Ref": "OctankAppSubnet"},"RouteTableId": {"Ref": "InternalRouteTable"}}
+		},
+		
+		"OctankDBSubnetRouteTableAssociation": {
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {"SubnetId": {"Ref": "OctankDBSubnet"},"RouteTableId": {"Ref": "InternalRouteTable"}}
+		},
 
 		"NetworkAcl": {
 			"Type": "AWS::EC2::NetworkAcl",
@@ -820,6 +828,7 @@
 				
 		"Route" : {
 			"Type" : "AWS::EC2::Route",
+			"DependsOn" : "NATGateway",
 			"Properties" : {
 				"RouteTableId" : { "Ref" : "InternalRouteTable" },
 				"DestinationCidrBlock" : "0.0.0.0/0",
