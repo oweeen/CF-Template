@@ -6,10 +6,12 @@
   "Mappings" : {
     "SubnetConfig" : {
       "VPC"     : { "CIDR" : "10.0.0.0/16" },
-      "Public1"  : { "CIDR" : "10.0.0.0/24" },
-      "Public2"  : { "CIDR" : "10.0.1.0/24" },
-      "Private1"  : { "CIDR" : "10.0.2.0/24" },
-      "Private2"  : { "CIDR" : "10.0.3.0/24" }
+      "Public1"  : { "CIDR" : "10.0.1.0/24" },
+      "Public2"  : { "CIDR" : "10.0.2.0/24" },
+      "Private1"  : { "CIDR" : "10.0.3.0/24" },
+      "Private2"  : { "CIDR" : "10.0.4.0/24" },
+      "DB1"  : { "CIDR" : "10.0.5.0/24" },
+      "DB2"  : { "CIDR" : "10.0.6.0/24" }
     }
   },
 
@@ -19,7 +21,7 @@
 		"VPC": {
 			"Type": "AWS::EC2::VPC",
 			"Properties": {
-				"CidrBlock": "10.0.0.0/16",
+				"CidrBlock" : { "Fn::FindInMap" : [ "SubnetConfig", "VPC", "CIDR" ]},
 				"EnableDnsSupport": "TRUE",
 				"EnableDnsHostnames": "TRUE",
 				"Tags": [{
@@ -35,17 +37,46 @@
 			}
 		},
 
-		"OctankWebSubnet": {
+		"OctankWebSubnet1": {
 			"Type": "AWS::EC2::Subnet",
 			"Properties": {
+				"AvailabilityZone" : {
+          "Fn::Select" : [ "0", { "Fn::GetAZs" : "" } ]
+        },
 				"VpcId": {
 					"Ref": "VPC"
 				},
-				"CidrBlock": "10.0.1.0/24",
+				"MapPublicIpOnLaunch" : true,
+				"CidrBlock" : { "Fn::FindInMap" : [ "SubnetConfig", "Public1", "CIDR" ]},
 				"Tags": [
 				{
 					"Key": "Name",
-					"Value": "CFN OctankWeb"
+					"Value": "CFN OctankWeb 1"
+				}, {
+					"Key": "Application",
+					"Value": {
+						"Ref": "AWS::StackId"
+					}
+				}
+				]
+			}
+		},
+
+		"OctankWebSubnet2": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"AvailabilityZone" : {
+          "Fn::Select" : [ "1", { "Fn::GetAZs" : "" } ]
+        },
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"MapPublicIpOnLaunch" : true,
+				"CidrBlock" : { "Fn::FindInMap" : [ "SubnetConfig", "Public2", "CIDR" ]},
+				"Tags": [
+				{
+					"Key": "Name",
+					"Value": "CFN OctankWeb 2"
 				}, {
 					"Key": "Application",
 					"Value": {
@@ -167,17 +198,29 @@
 			}
 		},
 
-		"OctankWebSubnetRouteTableAssociation": {
+		"OctankWebSubnetRouteTableAssociation1": {
 			"Type": "AWS::EC2::SubnetRouteTableAssociation",
 			"Properties": {
 				"SubnetId": {
-					"Ref": "OctankWebSubnet"
+					"Ref": "OctankWebSubnet1"
 				},
 				"RouteTableId": {
 					"Ref": "PublicFacingRouteTable"
 				}
 			}
 		},
+
+		"OctankWebSubnetRouteTableAssociation2": {
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {
+				"SubnetId": {
+					"Ref": "OctankWebSubnet2"
+				},
+				"RouteTableId": {
+					"Ref": "PublicFacingRouteTable"
+				}
+			}
+		},		
 
 			"OctankAppSubnetRouteTableAssociation": {
 			"Type": "AWS::EC2::SubnetRouteTableAssociation",
@@ -316,7 +359,7 @@
 			"Type": "AWS::EC2::SubnetNetworkAclAssociation",
 			"Properties": {
 				"SubnetId": {
-					"Ref": "OctankWebSubnet"
+					"Ref": "OctankWebSubnet1"
 				},
 				"NetworkAclId": {"Ref": "NetworkAcl"}
 			}
@@ -402,7 +445,7 @@
 			"Type" : "AWS::EC2::NatGateway",
 			"Properties" : {
 				"AllocationId" : { "Fn::GetAtt" : ["NATGatewayEIP", "AllocationId"]},
-				"SubnetId" : { "Ref" : "OctankWebSubnet"}
+				"SubnetId" : { "Ref" : "OctankWebSubnet1"}
 							}
 				},
 
