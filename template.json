@@ -414,11 +414,21 @@
 			}
 		},
 
-		"SubnetNetworkAclAssociation": {
+		"SubnetNetworkAclAssociation1": {
 			"Type": "AWS::EC2::SubnetNetworkAclAssociation",
 			"Properties": {
 				"SubnetId": {
 					"Ref": "OctankWebSubnet1"
+				},
+				"NetworkAclId": {"Ref": "NetworkAcl"}
+			}
+		},
+
+		"SubnetNetworkAclAssociation2": {
+			"Type": "AWS::EC2::SubnetNetworkAclAssociation",
+			"Properties": {
+				"SubnetId": {
+					"Ref": "OctankWebSubnet2"
 				},
 				"NetworkAclId": {"Ref": "NetworkAcl"}
 			}
@@ -520,4 +530,12 @@
 				}
 		
 	}
+},
+
+  "Outputs" : {
+    "VPCId" : {
+      "Description" : "VPCId of the newly created VPC",
+      "Value" :  { "Ref" : "VPC" }
+    }
+  }
 }
