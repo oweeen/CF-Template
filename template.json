@@ -3,17 +3,31 @@
 
 	"Description": "AWS CloudFormation to build out Octank's web-app infrastructure",
 
-  "Mappings" : {
-    "SubnetConfig" : {
-      "VPC"     : { "CIDR" : "10.0.0.0/16" },
-      "Public1"  : { "CIDR" : "10.0.10.0/24" },
-      "Public2"  : { "CIDR" : "10.0.11.0/24" },
-      "Private1"  : { "CIDR" : "10.0.20.0/24" },
-      "Private2"  : { "CIDR" : "10.0.21.0/24" },
-      "DB1"  : { "CIDR" : "10.0.30.0/24" },
-      "DB2"  : { "CIDR" : "10.0.31.0/24" }
-    }
-  },
+	"Mappings": {
+		"SubnetConfig": {
+			"VPC": {
+				"CIDR": "10.0.0.0/16"
+			},
+			"Public1": {
+				"CIDR": "10.0.10.0/24"
+			},
+			"Public2": {
+				"CIDR": "10.0.11.0/24"
+			},
+			"Private1": {
+				"CIDR": "10.0.20.0/24"
+			},
+			"Private2": {
+				"CIDR": "10.0.21.0/24"
+			},
+			"DB1": {
+				"CIDR": "10.0.30.0/24"
+			},
+			"DB2": {
+				"CIDR": "10.0.31.0/24"
+			}
+		}
+	},
 
 
 	"Resources": {
@@ -21,35 +35,39 @@
 		"VPC": {
 			"Type": "AWS::EC2::VPC",
 			"Properties": {
-				"CidrBlock" : { "Fn::FindInMap" : [ "SubnetConfig", "VPC", "CIDR" ]},
+				"CidrBlock": {
+					"Fn::FindInMap": ["SubnetConfig", "VPC", "CIDR"]
+				},
 				"EnableDnsSupport": "TRUE",
 				"EnableDnsHostnames": "TRUE",
 				"Tags": [{
 					"Key": "Name",
 					"Value": "CFN OctankVPC"
-					}, {
+				}, {
 					"Key": "Application",
 					"Value": {
 						"Ref": "AWS::StackId"
 					}
-				}
-				]
+				}]
 			}
 		},
 
 		"OctankWebSubnet1": {
 			"Type": "AWS::EC2::Subnet",
 			"Properties": {
-				"AvailabilityZone" : {
-          "Fn::Select" : [ "0", { "Fn::GetAZs" : "" } ]
-        },
+				"AvailabilityZone": {
+					"Fn::Select": ["0", {
+						"Fn::GetAZs": ""
+					}]
+				},
 				"VpcId": {
 					"Ref": "VPC"
 				},
-				"MapPublicIpOnLaunch" : true,
-				"CidrBlock" : { "Fn::FindInMap" : [ "SubnetConfig", "Public1", "CIDR" ]},
-				"Tags": [
-				{
+				"MapPublicIpOnLaunch": true,
+				"CidrBlock": {
+					"Fn::FindInMap": ["SubnetConfig", "Public1", "CIDR"]
+				},
+				"Tags": [{
 					"Key": "Name",
 					"Value": "CFN OctankWeb 1"
 				}, {
@@ -57,24 +75,26 @@
 					"Value": {
 						"Ref": "AWS::StackId"
 					}
-				}
-				]
+				}]
 			}
 		},
 
 		"OctankWebSubnet2": {
 			"Type": "AWS::EC2::Subnet",
 			"Properties": {
-				"AvailabilityZone" : {
-          "Fn::Select" : [ "1", { "Fn::GetAZs" : "" } ]
-        },
+				"AvailabilityZone": {
+					"Fn::Select": ["1", {
+						"Fn::GetAZs": ""
+					}]
+				},
 				"VpcId": {
 					"Ref": "VPC"
 				},
-				"MapPublicIpOnLaunch" : true,
-				"CidrBlock" : { "Fn::FindInMap" : [ "SubnetConfig", "Public2", "CIDR" ]},
-				"Tags": [
-				{
+				"MapPublicIpOnLaunch": true,
+				"CidrBlock": {
+					"Fn::FindInMap": ["SubnetConfig", "Public2", "CIDR"]
+				},
+				"Tags": [{
 					"Key": "Name",
 					"Value": "CFN OctankWeb 2"
 				}, {
@@ -82,21 +102,24 @@
 					"Value": {
 						"Ref": "AWS::StackId"
 					}
-				}
-				]
+				}]
 			}
 		},
 
 		"OctankAppSubnet1": {
 			"Type": "AWS::EC2::Subnet",
 			"Properties": {
-				"AvailabilityZone" : {
-          "Fn::Select" : [ "0", { "Fn::GetAZs" : "" } ]
-        },
-			"VpcId": {
+				"AvailabilityZone": {
+					"Fn::Select": ["0", {
+						"Fn::GetAZs": ""
+					}]
+				},
+				"VpcId": {
 					"Ref": "VPC"
 				},
-				"CidrBlock" : { "Fn::FindInMap" : [ "SubnetConfig", "Private1", "CIDR" ]},
+				"CidrBlock": {
+					"Fn::FindInMap": ["SubnetConfig", "Private1", "CIDR"]
+				},
 				"Tags": [{
 					"Key": "Name",
 					"Value": "CFN OctankApp 1"
@@ -112,13 +135,17 @@
 		"OctankAppSubnet2": {
 			"Type": "AWS::EC2::Subnet",
 			"Properties": {
-				"AvailabilityZone" : {
-          "Fn::Select" : [ "1", { "Fn::GetAZs" : "" } ]
-        },
+				"AvailabilityZone": {
+					"Fn::Select": ["1", {
+						"Fn::GetAZs": ""
+					}]
+				},
 				"VpcId": {
 					"Ref": "VPC"
 				},
-				"CidrBlock" : { "Fn::FindInMap" : [ "SubnetConfig", "Private2", "CIDR" ]},
+				"CidrBlock": {
+					"Fn::FindInMap": ["SubnetConfig", "Private2", "CIDR"]
+				},
 				"Tags": [{
 					"Key": "Name",
 					"Value": "CFN OctankApp 2"
@@ -129,18 +156,22 @@
 					}
 				}]
 			}
-		},		
+		},
 
 		"OctankDBSubnet1": {
 			"Type": "AWS::EC2::Subnet",
 			"Properties": {
-				"AvailabilityZone" : {
-          "Fn::Select" : [ "0", { "Fn::GetAZs" : "" } ]
-        },
+				"AvailabilityZone": {
+					"Fn::Select": ["0", {
+						"Fn::GetAZs": ""
+					}]
+				},
 				"VpcId": {
 					"Ref": "VPC"
 				},
-				"CidrBlock" : { "Fn::FindInMap" : [ "SubnetConfig", "DB1", "CIDR" ]},
+				"CidrBlock": {
+					"Fn::FindInMap": ["SubnetConfig", "DB1", "CIDR"]
+				},
 				"Tags": [{
 					"Key": "Name",
 					"Value": "CFN OctankDB 1"
@@ -156,13 +187,17 @@
 		"OctankDBSubnet2": {
 			"Type": "AWS::EC2::Subnet",
 			"Properties": {
-				"AvailabilityZone" : {
-          "Fn::Select" : [ "2", { "Fn::GetAZs" : "" } ]
-        },
+				"AvailabilityZone": {
+					"Fn::Select": ["2", {
+						"Fn::GetAZs": ""
+					}]
+				},
 				"VpcId": {
 					"Ref": "VPC"
 				},
-				"CidrBlock" : { "Fn::FindInMap" : [ "SubnetConfig", "DB2", "CIDR" ]},
+				"CidrBlock": {
+					"Fn::FindInMap": ["SubnetConfig", "DB2", "CIDR"]
+				},
 				"Tags": [{
 					"Key": "Name",
 					"Value": "CFN OctankDB 2"
@@ -269,29 +304,57 @@
 					"Ref": "PublicFacingRouteTable"
 				}
 			}
-		},		
-
-			"OctankAppSubnetRouteTableAssociation1": {
-			"Type": "AWS::EC2::SubnetRouteTableAssociation",
-			"Properties": {"SubnetId": {"Ref": "OctankAppSubnet1"},"RouteTableId": {"Ref": "InternalRouteTable"}}
 		},
-		
-			"OctankAppSubnetRouteTableAssociation2": {
+
+		"OctankAppSubnetRouteTableAssociation1": {
 			"Type": "AWS::EC2::SubnetRouteTableAssociation",
-			"Properties": {"SubnetId": {"Ref": "OctankAppSubnet2"},"RouteTableId": {"Ref": "InternalRouteTable"}}
+			"Properties": {
+				"SubnetId": {
+					"Ref": "OctankAppSubnet1"
+				},
+				"RouteTableId": {
+					"Ref": "InternalRouteTable"
+				}
+			}
+		},
+
+		"OctankAppSubnetRouteTableAssociation2": {
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {
+				"SubnetId": {
+					"Ref": "OctankAppSubnet2"
+				},
+				"RouteTableId": {
+					"Ref": "InternalRouteTable"
+				}
+			}
 		},
 
 		"OctankDBSubnetRouteTableAssociation1": {
 			"Type": "AWS::EC2::SubnetRouteTableAssociation",
-			"Properties": {"SubnetId": {"Ref": "OctankDBSubnet1"},"RouteTableId": {"Ref": "InternalRouteTable"}}
+			"Properties": {
+				"SubnetId": {
+					"Ref": "OctankDBSubnet1"
+				},
+				"RouteTableId": {
+					"Ref": "InternalRouteTable"
+				}
+			}
 		},
 
 		"OctankDBSubnetRouteTableAssociation2": {
 			"Type": "AWS::EC2::SubnetRouteTableAssociation",
-			"Properties": {"SubnetId": {"Ref": "OctankDBSubnet2"},"RouteTableId": {"Ref": "InternalRouteTable"}}
+			"Properties": {
+				"SubnetId": {
+					"Ref": "OctankDBSubnet2"
+				},
+				"RouteTableId": {
+					"Ref": "InternalRouteTable"
+				}
+			}
 		},
 
-			"NetworkAcl": {
+		"NetworkAcl": {
 			"Type": "AWS::EC2::NetworkAcl",
 			"Properties": {
 				"VpcId": {
@@ -420,7 +483,9 @@
 				"SubnetId": {
 					"Ref": "OctankWebSubnet1"
 				},
-				"NetworkAclId": {"Ref": "NetworkAcl"}
+				"NetworkAclId": {
+					"Ref": "NetworkAcl"
+				}
 			}
 		},
 
@@ -430,7 +495,9 @@
 				"SubnetId": {
 					"Ref": "OctankWebSubnet2"
 				},
-				"NetworkAclId": {"Ref": "NetworkAcl"}
+				"NetworkAclId": {
+					"Ref": "NetworkAcl"
+				}
 			}
 		},
 
@@ -454,7 +521,7 @@
 				}]
 			}
 		},
-		
+
 		"OctankAppSecurityGroup": {
 			"Type": "AWS::EC2::SecurityGroup",
 			"DependsOn": "OctankWebSecurityGroup",
@@ -465,19 +532,23 @@
 				"GroupDescription": "Enable web tier to access app tier on port 80"
 			}
 		},
-		
+
 		"OctankAppSecurityGroupIngress": {
 			"Type": "AWS::EC2::SecurityGroupIngress",
 			"DependsOn": "OctankAppSecurityGroup",
 			"Properties": {
-				"GroupId": { "Ref" : "OctankAppSecurityGroup"},
-				"SourceSecurityGroupId": { "Ref": "OctankWebSecurityGroup" },
+				"GroupId": {
+					"Ref": "OctankAppSecurityGroup"
+				},
+				"SourceSecurityGroupId": {
+					"Ref": "OctankWebSecurityGroup"
+				},
 				"IpProtocol": "tcp",
-                "FromPort": "80",
-                "ToPort": "80"
+				"FromPort": "80",
+				"ToPort": "80"
 			}
 		},
-		
+
 		"OctankDBSecurityGroup": {
 			"Type": "AWS::EC2::SecurityGroup",
 			"DependsOn": "OctankAppSecurityGroup",
@@ -488,48 +559,60 @@
 				"GroupDescription": "Enable app tier to access db tier on port 3306"
 			}
 		},
-		
+
 		"OctankDBSecurityGroupIngress": {
 			"Type": "AWS::EC2::SecurityGroupIngress",
 			"DependsOn": "OctankDBSecurityGroup",
 			"Properties": {
-				"GroupId": { "Ref" : "OctankDBSecurityGroup"},
-				"SourceSecurityGroupId": { "Ref": "OctankAppSecurityGroup" },
+				"GroupId": {
+					"Ref": "OctankDBSecurityGroup"
+				},
+				"SourceSecurityGroupId": {
+					"Ref": "OctankAppSecurityGroup"
+				},
 				"IpProtocol": "tcp",
-                "FromPort": "3306",
-                "ToPort": "3306"
+				"FromPort": "3306",
+				"ToPort": "3306"
 			}
 		},
-		
-		"NATGatewayEIP": {
-			"Type" : "AWS::EC2::EIP",
-			"DependsOn": "VPC",
-			"Properties" : {
-				"Domain" : "VPC"
-		   }
-		},
-		
-		"NATGateway" : {
-			"DependsOn" : "AttachGateway",
-			"Type" : "AWS::EC2::NatGateway",
-			"Properties" : {
-				"AllocationId" : { "Fn::GetAtt" : ["NATGatewayEIP", "AllocationId"]},
-				"SubnetId" : { "Ref" : "OctankWebSubnet1"}
-							}
-				},
 
-				
-		"Route" : {
-			"Type" : "AWS::EC2::Route",
-			"DependsOn" : "NATGateway",
-			"Properties" : {
-				"RouteTableId" : { "Ref" : "InternalRouteTable" },
-				"DestinationCidrBlock" : "0.0.0.0/0",
-				"NatGatewayId" : { "Ref" : "NATGateway" }
-				  }
+		"NATGatewayEIP": {
+			"Type": "AWS::EC2::EIP",
+			"DependsOn": "VPC",
+			"Properties": {
+				"Domain": "VPC"
+			}
+		},
+
+		"NATGateway": {
+			"DependsOn": "AttachGateway",
+			"Type": "AWS::EC2::NatGateway",
+			"Properties": {
+				"AllocationId": {
+					"Fn::GetAtt": ["NATGatewayEIP", "AllocationId"]
+				},
+				"SubnetId": {
+					"Ref": "OctankWebSubnet1"
 				}
-		
-	}
+			}
+		},
+
+
+		"Route": {
+			"Type": "AWS::EC2::Route",
+			"DependsOn": "NATGateway",
+			"Properties": {
+				"RouteTableId": {
+					"Ref": "InternalRouteTable"
+				},
+				"DestinationCidrBlock": "0.0.0.0/0",
+				"NatGatewayId": {
+					"Ref": "NATGateway"
+				}
+			}
+		}
+
+
 	},
 
 	"Outputs": {
