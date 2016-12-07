@@ -87,16 +87,19 @@
 			}
 		},
 
-		"OctankAppSubnet": {
+		"OctankAppSubnet1": {
 			"Type": "AWS::EC2::Subnet",
 			"Properties": {
-				"VpcId": {
+				"AvailabilityZone" : {
+          "Fn::Select" : [ "0", { "Fn::GetAZs" : "" } ]
+        },
+			"VpcId": {
 					"Ref": "VPC"
 				},
-				"CidrBlock": "10.0.2.0/24",
+				"CidrBlock" : { "Fn::FindInMap" : [ "SubnetConfig", "Private1", "CIDR" ]},
 				"Tags": [{
 					"Key": "Name",
-					"Value": "CFN OctankApp"
+					"Value": "CFN OctankApp 1"
 				}, {
 					"Key": "Application",
 					"Value": {
@@ -106,16 +109,41 @@
 			}
 		},
 
-		"OctankDBSubnet": {
+		"OctankAppSubnet2": {
 			"Type": "AWS::EC2::Subnet",
 			"Properties": {
+				"AvailabilityZone" : {
+          "Fn::Select" : [ "1", { "Fn::GetAZs" : "" } ]
+        },
 				"VpcId": {
 					"Ref": "VPC"
 				},
-				"CidrBlock": "10.0.3.0/24",
+				"CidrBlock" : { "Fn::FindInMap" : [ "SubnetConfig", "Private2", "CIDR" ]},
 				"Tags": [{
 					"Key": "Name",
-					"Value": "CFN OctankDB"
+					"Value": "CFN OctankApp 2"
+				}, {
+					"Key": "Application",
+					"Value": {
+						"Ref": "AWS::StackId"
+					}
+				}]
+			}
+		},		
+
+		"OctankDBSubnet1": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"AvailabilityZone" : {
+          "Fn::Select" : [ "0", { "Fn::GetAZs" : "" } ]
+        },
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"CidrBlock" : { "Fn::FindInMap" : [ "SubnetConfig", "DB1", "CIDR" ]},
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CFN OctankDB 1"
 				}, {
 					"Key": "Application",
 					"Value": {
@@ -125,6 +153,27 @@
 			}
 		},
 
+		"OctankDBSubnet2": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"AvailabilityZone" : {
+          "Fn::Select" : [ "2", { "Fn::GetAZs" : "" } ]
+        },
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"CidrBlock" : { "Fn::FindInMap" : [ "SubnetConfig", "DB2", "CIDR" ]},
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CFN OctankDB 2"
+				}, {
+					"Key": "Application",
+					"Value": {
+						"Ref": "AWS::StackId"
+					}
+				}]
+			}
+		},
 
 
 		"InternetGateway": {
@@ -222,17 +271,27 @@
 			}
 		},		
 
-			"OctankAppSubnetRouteTableAssociation": {
+			"OctankAppSubnetRouteTableAssociation1": {
 			"Type": "AWS::EC2::SubnetRouteTableAssociation",
-			"Properties": {"SubnetId": {"Ref": "OctankAppSubnet"},"RouteTableId": {"Ref": "InternalRouteTable"}}
+			"Properties": {"SubnetId": {"Ref": "OctankAppSubnet1"},"RouteTableId": {"Ref": "InternalRouteTable"}}
 		},
 		
-		"OctankDBSubnetRouteTableAssociation": {
+			"OctankAppSubnetRouteTableAssociation2": {
 			"Type": "AWS::EC2::SubnetRouteTableAssociation",
-			"Properties": {"SubnetId": {"Ref": "OctankDBSubnet"},"RouteTableId": {"Ref": "InternalRouteTable"}}
+			"Properties": {"SubnetId": {"Ref": "OctankAppSubnet2"},"RouteTableId": {"Ref": "InternalRouteTable"}}
 		},
 
-		"NetworkAcl": {
+		"OctankDBSubnetRouteTableAssociation1": {
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {"SubnetId": {"Ref": "OctankDBSubnet1"},"RouteTableId": {"Ref": "InternalRouteTable"}}
+		},
+
+		"OctankDBSubnetRouteTableAssociation2": {
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {"SubnetId": {"Ref": "OctankDBSubnet2"},"RouteTableId": {"Ref": "InternalRouteTable"}}
+		},
+
+			"NetworkAcl": {
 			"Type": "AWS::EC2::NetworkAcl",
 			"Properties": {
 				"VpcId": {
