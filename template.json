@@ -376,6 +376,22 @@
 				}]
 			}
 		},
+		
+			"OctankWebSecurityGroupIngress": {
+			"Type": "AWS::EC2::SecurityGroupIngress",
+			"DependsOn": "OctankWebSecurityGroup",
+			"Properties": {
+				"GroupId": {
+					"Ref": "OctankWebSecurityGroup"
+				},
+				"SourceSecurityGroupId": {
+					"Ref": "OctankWebSecurityGroup"
+				},
+				"IpProtocol": "tcp",
+				"FromPort": "80",
+				"ToPort": "80"
+			}
+		},	
 
 		"OctankAppSecurityGroup": {
 			"Type": "AWS::EC2::SecurityGroup",
@@ -385,22 +401,6 @@
 					"Ref": "VPC"
 				},
 				"GroupDescription": "Enable web tier to access app tier on port 80"
-			}
-		},
-
-		"OctankAppSecurityGroupIngress": {
-			"Type": "AWS::EC2::SecurityGroupIngress",
-			"DependsOn": "OctankAppSecurityGroup",
-			"Properties": {
-				"GroupId": {
-					"Ref": "OctankAppSecurityGroup"
-				},
-				"SourceSecurityGroupId": {
-					"Ref": "OctankWebSecurityGroup"
-				},
-				"IpProtocol": "tcp",
-				"FromPort": "80",
-				"ToPort": "80"
 			}
 		},
 
