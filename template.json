@@ -404,7 +404,7 @@
 			}
 		},
 		
-		"OctankAppSecurityGroupIngress1": {
+		"OctankAppSecurityGroupIngress": {
 			"Type": "AWS::EC2::SecurityGroupIngress",
 			"DependsOn": "OctankAppSecurityGroup",
 			"Properties": {
@@ -412,24 +412,11 @@
 					"Ref": "OctankAppSecurityGroup"
 				},
 			"SourceSecurityGroupId": {
-   		       "Ref": { "Fn::GetAtt" : [ "OctankWebSecurityGroup", "GroupID" ] },          
+   		       "Ref": "OctankWebSecurityGroup"          
          		 "FromPort": "80",
          		 "ToPort": "80"
       			  }}},
-
-				"OctankAppSecurityGroupIngress2": {
-					"Type": "AWS::EC2::SecurityGroupIngress",
-					"DependsOn": "OctankAppSecurityGroup",
-					"Properties": {
-						"GroupId": {
-							"Ref": "OctankAppSecurityGroup"
-						},
-						  
-						"SourceSecurityGroupId": {
-							"Ref": { "Fn::GetAtt" : [ "OctankAppSecurityGroup", "GroupID" ] },
-							"FromPort": "80",
-							"ToPort": "80"
-						}}},		
+	
 		"OctankDBSecurityGroup": {
 			"Type": "AWS::EC2::SecurityGroup",
 			"DependsOn": "OctankAppSecurityGroup",
