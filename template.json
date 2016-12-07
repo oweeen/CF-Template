@@ -411,11 +411,11 @@
 				"GroupId": {
 					"Ref": "OctankAppSecurityGroup"
 				},
-				"SourceSecurityGroupId": {
-					"Ref": "OctankWebSecurityGroup",
-					"FromPort": "80",
-					"ToPort": "80"
-				}}},
+			"SourceSecurityGroupId": {
+   		       "Ref": { "Fn::GetAtt" : [ "OctankWebSecurityGroup", "GroupID" ] },          
+         		 "FromPort": "80",
+         		 "ToPort": "80"
+      			  }}},
 
 				"OctankAppSecurityGroupIngress2": {
 					"Type": "AWS::EC2::SecurityGroupIngress",
@@ -426,7 +426,7 @@
 						},
 						  
 						"SourceSecurityGroupId": {
-							"Ref": "OctankAppSecurityGroup",
+							"Ref": { "Fn::GetAtt" : [ "OctankAppSecurityGroup", "GroupID" ] },
 							"FromPort": "80",
 							"ToPort": "80"
 						}}},		
