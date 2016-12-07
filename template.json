@@ -530,12 +530,14 @@
 				}
 		
 	}
-},
+	},
 
-  "Outputs" : {
-    "VPCId" : {
-      "Description" : "VPCId of the newly created VPC",
-      "Value" :  { "Ref" : "VPC" }
-    }
-  }
+	"Outputs": {
+		"VPCId": {
+			"Description": "VPCId of the newly created VPC",
+			"Value": {
+				"Ref": "VPC"
+			}
+		}
+	}
 }
