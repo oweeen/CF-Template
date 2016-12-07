@@ -404,19 +404,7 @@
 			}
 		},
 		
-		"OctankAppSecurityGroupIngress": {
-			"Type": "AWS::EC2::SecurityGroupIngress",
-			"DependsOn": "OctankAppSecurityGroup",
-			"Properties": {
-				"GroupId": {
-					"Ref": "OctankAppSecurityGroup"
-				},
-			"SourceSecurityGroupId": {
-   		       "Ref": "OctankWebSecurityGroup",
-			"IpProtocol": "tcp",
-         		 "FromPort": "80",
-         		 "ToPort": "80"
-      			  }}},
+
 	
 		"OctankDBSecurityGroup": {
 			"Type": "AWS::EC2::SecurityGroup",
