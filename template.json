@@ -412,7 +412,7 @@
 					"Ref": "OctankAppSecurityGroup"
 				},
 			"SourceSecurityGroupId": {
-   		       "Ref": "OctankWebSecurityGroup"          
+   		       "Ref": "OctankWebSecurityGroup",          
          		 "FromPort": "80",
          		 "ToPort": "80"
       			  }}},
